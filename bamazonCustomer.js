@@ -9,13 +9,11 @@ require("console.table");
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
-  user: "root"
+  user: "root",
+  password: "password",
+  database: "bamazon_db"
 });
 
-// constructor function used to create programmer objects
-function Programmer(name, position, age, language) {
-  this.name = name;
-  this.position = position;
-  this.age = age;
-  this.language = language;
-}
+connection.connect(function(err) {
+  if (err) throw err;
+});
