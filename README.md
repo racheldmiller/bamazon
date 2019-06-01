@@ -4,6 +4,7 @@ Like Amazon, but not...
 
 <h3>Overview</h3>
 Quasi-Amazon. Amazonish. Low-key Amazon.
+<img width="545" alt="Screen Shot 2019-06-01 at 9 21 06 AM" src="https://user-images.githubusercontent.com/46205109/58751163-e0c80b00-844f-11e9-8048-32524fed8623.png">
 
 <h3>Components</h3>
 JavaScript | MySql
