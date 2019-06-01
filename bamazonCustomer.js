@@ -1,8 +1,7 @@
 // List dependencies here
-
 var mysql = require("mysql");
 var inquirer = require("inquirer");
-var chalk = require("chalk");
+// var chalk = require("chalk"); // nice tool I installed, but can incorporate later
 require("console.table");
 
 // Establish the connection
@@ -23,7 +22,7 @@ connection.connect(function(err) {
 
 // Include the ids, names, and prices of products for sale.
 function itemsForSale() {
-  console.log("Want to buy these?");
+  console.log("Look at these options!");
   connection.query("SELECT * FROM products", function(err, res) {
     if (err) {
       throw err;
@@ -54,7 +53,7 @@ function buyById(inventory) {
 }
 
 function checkInventory(inventory, choiceId) {
-  // sub "val" for "inventory"
+  // sub "val" for "inventory" to make it easier for me to visualize it
   for (var i = 0; i < inventory.length; i++) {
     if (choiceId === inventory[i].item_id) {
       // console.log(inventory[i]);
@@ -76,22 +75,40 @@ function quantity(product) {
       // console.log(amount);
       if (amount > product.stock_quantity) {
         console.log("Insufficient quantity!");
-        itemsForSale();
+        itemsForSale(); // instead of doing connection.end(); right away
+      } else {
+        schmoney();
       }
     });
 }
 
-// next steps
-// function toBuy (to make an actual purchase)
-// update sql query
+function schmoney(choiceID, amount) {
+  var choiceID = answer.item_id;
+  var amount = answer.quantity;
+  connection.query(
+    "SELECT * FROM products WHERE item_id =" + choiceID,
+    function(err, res) {
+      if (err) throw err;
+      var stockAmt = results[0].stock_quantity;
+      if (stockAmt >= amount) {
+        var updateStock = stockAmt - amount;
+        connection.query(
+          "UPDATE products SET stock_quantity = stock_quantity - ?" +
+            updateStock +
+            "WHERE item_id = ?" +
+            answer,
+          function(err, res) {
+            if (err) throw err;
+            else {
+              console.log("Thanks for your purchase!");
+            }
+          }
+        );
+      } else {
+        console.log("Insufficient quantity!");
+      }
+    }
+  );
+}
 
-// The app should then prompt users with two messages.
-// 1st: ID of product they want to buy.
-// 2nd: how many units of product they'd want to buy.
-
-// Once the customer has placed the order, your application should check if your store has enough
-// of the product to meet the customer's request.
-// If not, the app should log a phrase like Insufficient quantity!, and then prevent the order from going through.
-// However, if your store does have enough of the product, you should fulfill the customer's order.
-// This means updating the SQL database to reflect the remaining quantity.
-// Once the update goes through, show the customer the total cost of their purchase.
+// need to test the schmoney function.
