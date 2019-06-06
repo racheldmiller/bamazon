@@ -115,8 +115,7 @@ function schmoney(choiceId, amount) {
       } else {
         console.log("Insufficient quantity!");
       }
+      itemsForSale();
     }
   );
 }
-
-// need to test the schmoney function.
