@@ -44,7 +44,7 @@ function buyById(inventory) {
       // console.log("answer ====> ", answer);
       var choiceId = parseInt(answer.item_id);
       var product = checkInventory(inventory, choiceId);
-      console.log(product);
+      // console.log(product);
       if (product) {
         // console.log("works");
         quantity(choiceId, product);
@@ -59,7 +59,7 @@ function checkInventory(inventory, choiceId) {
   // console.log("choice id :", choiceId);
   // sub "val" for "inventory" to make it easier for me to visualize it
   for (var i = 0; i < inventory.length; i++) {
-    console.log("item id :", inventory[i].item_id);
+    // console.log("item id :", inventory[i].item_id);
     if (choiceId === inventory[i].item_id) {
       // console.log(inventory[i]);
       return inventory[i];
