@@ -41,11 +41,13 @@ function buyById(inventory) {
       message: "Pick the ID of the products you'd like to buy"
     })
     .then(function(answer) {
+      // console.log("answer ====> ", answer);
       var choiceId = parseInt(answer.item_id);
       var product = checkInventory(inventory, choiceId);
+      console.log(product);
       if (product) {
         // console.log("works");
-        quantity(product);
+        quantity(choiceId, product);
       } else {
         console.log("product not found");
       }
@@ -53,8 +55,11 @@ function buyById(inventory) {
 }
 
 function checkInventory(inventory, choiceId) {
+  // console.log("inventory ", inventory);
+  // console.log("choice id :", choiceId);
   // sub "val" for "inventory" to make it easier for me to visualize it
   for (var i = 0; i < inventory.length; i++) {
+    console.log("item id :", inventory[i].item_id);
     if (choiceId === inventory[i].item_id) {
       // console.log(inventory[i]);
       return inventory[i];
@@ -63,7 +68,7 @@ function checkInventory(inventory, choiceId) {
   return null;
 }
 
-function quantity(product) {
+function quantity(choiceId, product) {
   inquirer
     .prompt({
       name: "quantity",
@@ -71,32 +76,35 @@ function quantity(product) {
       message: "How many units would you like to buy?"
     })
     .then(function(answer) {
+      // console.log("answer ====> ", answer);
+      // var choiceId = parseInt(answer.item_id);
       var amount = parseInt(answer.quantity);
-      // console.log(amount);
+      console.log("it works", choiceId);
       if (amount > product.stock_quantity) {
         console.log("Insufficient quantity!");
         itemsForSale(); // instead of doing connection.end(); right away
       } else {
-        schmoney();
+        schmoney(choiceId, amount);
       }
     });
 }
 
-function schmoney(choiceID, amount) {
-  var choiceID = answer.item_id;
-  var amount = answer.quantity;
+function schmoney(choiceId, amount) {
+  // var choiceID = answer.item_id;
+  console.log("choice id :", choiceId);
+
+  // var amount = answer.quantity;
   connection.query(
-    "SELECT * FROM products WHERE item_id =" + choiceID,
+    "SELECT * FROM products WHERE item_id =" + choiceId,
     function(err, res) {
       if (err) throw err;
-      var stockAmt = results[0].stock_quantity;
+      // console.log("res =====>", res);
+      var stockAmt = parseInt(res[0].stock_quantity);
       if (stockAmt >= amount) {
-        var updateStock = stockAmt - amount;
+        var updateStock = parseInt(stockAmt - amount);
         connection.query(
-          "UPDATE products SET stock_quantity = stock_quantity - ?" +
-            updateStock +
-            "WHERE item_id = ?" +
-            answer,
+          "UPDATE products SET stock_quantity = stock_quantity - ?  WHERE item_id = ?",
+          [amount, choiceId], // question marks replaced by what we're placing in here
           function(err, res) {
             if (err) throw err;
             else {
