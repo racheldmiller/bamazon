@@ -79,17 +79,17 @@ function quantity(choiceId, product) {
       // console.log("answer ====> ", answer);
       // var choiceId = parseInt(answer.item_id);
       var amount = parseInt(answer.quantity);
-      console.log("it works", choiceId);
+      // console.log("it works", choiceId);
       if (amount > product.stock_quantity) {
         console.log("Insufficient quantity!");
         itemsForSale(); // instead of doing connection.end(); right away
       } else {
-        schmoney(choiceId, amount);
+        purchaseAndUpdate(choiceId, amount);
       }
     });
 }
 
-function schmoney(choiceId, amount) {
+function purchaseAndUpdate(choiceId, amount) {
   // var choiceID = answer.item_id;
   console.log("choice id :", choiceId);
 
@@ -101,7 +101,7 @@ function schmoney(choiceId, amount) {
       // console.log("res =====>", res);
       var stockAmt = parseInt(res[0].stock_quantity);
       if (stockAmt >= amount) {
-        var updateStock = parseInt(stockAmt - amount);
+        updateStock = parseInt(stockAmt - amount);
         connection.query(
           "UPDATE products SET stock_quantity = stock_quantity - ?  WHERE item_id = ?",
           [amount, choiceId], // question marks replaced by what we're placing in here
@@ -115,7 +115,7 @@ function schmoney(choiceId, amount) {
       } else {
         console.log("Insufficient quantity!");
       }
-      itemsForSale();
+      connection.end();
     }
   );
 }
