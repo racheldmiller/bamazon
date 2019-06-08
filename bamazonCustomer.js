@@ -115,7 +115,7 @@ function purchaseAndUpdate(choiceId, amount) {
       } else {
         console.log("Insufficient quantity!");
       }
-      connection.end();
+      itemsForSale();
     }
   );
 }
