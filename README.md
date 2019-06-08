@@ -10,6 +10,8 @@ So far, the table will appear with products that are available to purchase. You 
 
 <img width="554" alt="Screen Shot 2019-06-08 at 8 52 14 AM" src="https://user-images.githubusercontent.com/46205109/59149534-ce5b4d80-89ca-11e9-9880-32bf7e64550d.png">
 
+You can see that after making a purchase, the table updates. However, if you look at Item ID 1, there's a bug. (More details in the Commentary section.)
+
 <h3>Components</h3>
 JavaScript | MySql
 
